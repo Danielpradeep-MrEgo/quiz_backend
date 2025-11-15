@@ -75,19 +75,25 @@ python app.py
 
 The API will be available at `http://localhost:5000`
 
-### 🚀 Deploy to Vercel
+### 🚀 Deploy to Railway
 
-**Quick Deploy:** See [DEPLOY.md](DEPLOY.md) for a 5-minute deployment guide.
+**Quick Deploy:** See [DEPLOY_RAILWAY.md](DEPLOY_RAILWAY.md) for a 5-minute deployment guide.
 
-**Detailed Guide:** See [VERCEL_DEPLOY.md](VERCEL_DEPLOY.md) for comprehensive deployment instructions.
+**Detailed Guide:** See [RAILWAY_DEPLOY.md](RAILWAY_DEPLOY.md) for comprehensive deployment instructions.
 
 **Quick Steps:**
 1. Push code to GitHub
-2. Import project in Vercel
+2. Deploy from GitHub repo in Railway
 3. Set environment variables (`MONGO_URI`, `DB_NAME`)
 4. Deploy!
 
-Your API will be live at `https://your-project.vercel.app`
+Your API will be live at `https://your-project.up.railway.app`
+
+**Why Railway?**
+- ✅ Simpler setup (no serverless wrappers needed)
+- ✅ Better for MongoDB connections
+- ✅ Uses your existing `app.py` directly
+- ✅ Automatic port management
 
 ## 📡 API Endpoints
 

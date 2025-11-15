@@ -11,8 +11,14 @@ app = Flask(__name__)
 CORS(app)
 
 # MongoDB Setup
-client = MongoClient(os.environ.get("MONGO_URI"))
-db = client[os.environ.get("DB_NAME")]
+mongo_uri = os.environ.get("MONGO_URI")
+db_name = os.environ.get("DB_NAME", "quiz_management")
+
+if not mongo_uri:
+    raise ValueError("MONGO_URI environment variable is required")
+
+client = MongoClient(mongo_uri)
+db = client[db_name]
 
 # Register blueprints
 admin_bp = create_admin_blueprint(db)

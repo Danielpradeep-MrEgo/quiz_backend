@@ -12,5 +12,6 @@ class Config:
     # Flask settings
     DEBUG = os.environ.get("FLASK_DEBUG", "True").lower() == "true"
     HOST = os.environ.get("FLASK_HOST", "0.0.0.0")
-    PORT = int(os.environ.get("FLASK_PORT", "5000"))
+    # Railway provides PORT automatically, fallback to FLASK_PORT or 5000
+    PORT = int(os.environ.get("PORT") or os.environ.get("FLASK_PORT", "5000"))
 
