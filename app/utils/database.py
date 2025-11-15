@@ -7,7 +7,6 @@ from config import Config
 db = None
 client = None
 
-print(os.environ.get("MONGO_URI"))
 def init_db():
     """Initialize MongoDB connection"""
     global db, client
