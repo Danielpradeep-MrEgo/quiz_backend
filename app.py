@@ -72,6 +72,7 @@ def home():
 @app.route("/health")
 def health():
     status = "healthy" if db is not None else "unhealthy"
+    print(os.environ.get("MONGO_URI"))
     response = {
         "status": status,
         "mongodb_connected": db is not None
