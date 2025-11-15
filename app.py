@@ -15,9 +15,19 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-# MongoDB Setup - reads from .env file locally or Railway env vars in production
-mongo_uri = os.environ.get("MONGO_URI")
-db_name = os.environ.get("DB_NAME", "quiz_management")
+# MongoDB Setup - Read from environment variables
+# Railway sets these as environment variables, .env file is for local dev only
+mongo_uri = os.environ.get("MONGO_URI") or Config.MONGO_URI
+db_name = os.environ.get("DB_NAME") or Config.DB_NAME or "quiz_management"
+
+# Debug logging (check Railway logs to see these)
+print("=" * 50)
+print("ENVIRONMENT VARIABLE DEBUG:")
+print(f"MONGO_URI in os.environ: {'MONGO_URI' in os.environ}")
+print(f"MONGO_URI value (first 50 chars): {str(os.environ.get('MONGO_URI', 'NOT_SET'))[:50]}")
+print(f"Config.MONGO_URI (first 50 chars): {str(Config.MONGO_URI)[:50]}")
+print(f"Final mongo_uri used: {str(mongo_uri)[:50] if mongo_uri else 'None'}")
+print("=" * 50)
 
 # Initialize variables
 client = None
