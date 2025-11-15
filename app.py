@@ -15,19 +15,37 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-# MongoDB Setup - Read from environment variables
-# Railway sets these as environment variables, .env file is for local dev only
-mongo_uri = os.environ.get("MONGO_URI") or Config.MONGO_URI
-db_name = os.environ.get("DB_NAME") or Config.DB_NAME or "quiz_management"
+# MongoDB Setup - Read directly from environment variables
+# Railway injects these at runtime
+mongo_uri = os.getenv("MONGO_URI")  # Use getenv instead of environ.get
+db_name = os.getenv("DB_NAME", "quiz_management")
 
-# Debug logging (check Railway logs to see these)
-print("=" * 50)
-print("ENVIRONMENT VARIABLE DEBUG:")
-print(f"MONGO_URI in os.environ: {'MONGO_URI' in os.environ}")
-print(f"MONGO_URI value (first 50 chars): {str(os.environ.get('MONGO_URI', 'NOT_SET'))[:50]}")
-print(f"Config.MONGO_URI (first 50 chars): {str(Config.MONGO_URI)[:50]}")
-print(f"Final mongo_uri used: {str(mongo_uri)[:50] if mongo_uri else 'None'}")
-print("=" * 50)
+# Extensive debugging - check Railway logs for this output
+print("\n" + "="*60)
+print("ENVIRONMENT VARIABLE DIAGNOSTICS:")
+print("="*60)
+print(f"All environment variables containing 'MONGO':")
+for key, value in os.environ.items():
+    if 'MONGO' in key.upper():
+        # Show first 30 chars of value for security
+        val_preview = value[:30] + "..." if len(value) > 30 else value
+        print(f"  {key} = {val_preview} (length: {len(value)})")
+
+print(f"\nMONGO_URI check:")
+print(f"  'MONGO_URI' in os.environ: {'MONGO_URI' in os.environ}")
+print(f"  os.getenv('MONGO_URI'): {os.getenv('MONGO_URI', 'NOT_FOUND')[:50] if os.getenv('MONGO_URI') else 'NOT_FOUND'}")
+print(f"  os.environ.get('MONGO_URI'): {os.environ.get('MONGO_URI', 'NOT_FOUND')[:50] if os.environ.get('MONGO_URI') else 'NOT_FOUND'}")
+
+# Try alternative names Railway might use
+alt_names = ['MONGO_URI', 'MONGODB_URI', 'DATABASE_URL', 'MONGO_URL']
+for alt_name in alt_names:
+    if alt_name in os.environ:
+        print(f"  Found alternative: {alt_name}")
+
+print(f"\nFinal values:")
+print(f"  mongo_uri: {mongo_uri[:50] + '...' if mongo_uri and len(mongo_uri) > 50 else mongo_uri or 'None'}")
+print(f"  db_name: {db_name}")
+print("="*60 + "\n")
 
 # Initialize variables
 client = None
@@ -72,7 +90,6 @@ def home():
 @app.route("/health")
 def health():
     status = "healthy" if db is not None else "unhealthy"
-    print(os.environ.get("MONGO_URI"))
     response = {
         "status": status,
         "mongodb_connected": db is not None
