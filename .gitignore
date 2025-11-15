@@ -1,0 +1,7 @@
+.env
+.env.example
+README.md
+API_USAGE.md
+.idea
+.vscode
+.venv
