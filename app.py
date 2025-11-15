@@ -1,16 +1,21 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
+from dotenv import load_dotenv
 from config import Config
 from app.routes.admin_routes import create_admin_blueprint
 from app.routes.public_routes import create_public_blueprint
 import os
 
+# Load environment variables from .env file (for local development)
+# On Railway, this will use the environment variables set in the dashboard
+load_dotenv()
+
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 
-# MongoDB Setup
+# MongoDB Setup - reads from .env file locally or Railway env vars in production
 mongo_uri = os.environ.get("MONGO_URI")
 db_name = os.environ.get("DB_NAME", "quiz_management")
 
